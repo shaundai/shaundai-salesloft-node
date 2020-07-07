@@ -3,7 +3,8 @@ const port = process.env.PORT || 3001;
 const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'http://localhost:3001/salesloft'
+const redirectUri = 'http://localhost:3001/salesloft';
+const salesloftApi = require('./salesloftApi');
 
 const express = require('express');
 const app = express();
@@ -14,34 +15,17 @@ app.listen(port, () => {
 })
 
 app.get('/', (req, res) => {
-    getAccessToken()
-    .then((response) => {
-        const newToken = req.query.code
-        res.send('hi')
-    })
-    .catch((err) => {
-        res.status(404).send('there was an error')
-    })
+   res.send('main app')
 })
 
+//gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
     const code = req.query.code
     const context = req.query.context
     const scope = req.query.scope
-    axios({
-        method: 'post',
-        url: `https://accounts.salesloft.com/oauth/token`,
-        params: {
-        "client_id": salesloftClientId,
-        "client_secret": salesloftSecret,
-        "code": code,
-        "grant_type": "authorization_code",
-        "redirect_uri": redirectUri,
-        "context": context,
-        "scope": scope
-        },
-    }).then((response) => {
-        const accessToken = response.data.access_token
+    salesloftApi.getAccessToken(code, context, scope).then((response) => {
+        let accessToken = response.data.access_token
+        const refreshToken = response.data.refresh_token
         axios({
             method: 'get',
             url: `https://api.salesloft.com/v2/me.json`,
@@ -50,15 +34,42 @@ app.get('/salesloft', (req, res) => {
             }
         }).then((response) => {
             res.send(response.data)
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                axios({
+                    method: 'post',
+                    url: `https://api.salesloft.com/v2/me.json`,
+                    params: {
+                        "client_id": salesloftClientId,
+                        "client_secret": salesloftSecret,
+                        "grant_type": "refresh_token",
+                        "refresh_token": refreshToken,
+                        },
+                }).then((response) => {
+                    res.send(response.data)
+                })
+            }
         })
     })
-    .catch((err) => {
-        res.status(404).send(err)
-    })
-
 }
 )
 
-const getAccessToken = () => {
-    return axios.get(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=${redirectUri}&response_type=code`)
+const getRefreshToken = (refreshToken) => {
+    return axios({
+            method: 'post',
+            url: `https://accounts.salesloft.com/oauth/token`,
+            params: {
+            "client_id": salesloftClientId,
+            "client_secret": salesloftSecret,
+            "grant_type": "refresh_token",
+            "refresh_token": refreshToken
+            },
+        }).then((response) => {
+            const accessToken = response.data.access_token
+            return accessToken;
+        })
+        .catch((err) => {
+            res.status(404).send(err)
+        })
+    
 }
