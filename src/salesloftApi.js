@@ -1,5 +1,6 @@
 module.exports = {
     getAccessToken,
+    getUserInformation,
     getNewAccessToken,
 };
 
