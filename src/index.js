@@ -3,7 +3,7 @@ const port = process.env.PORT || 3001;
 const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'http://localhost:3001/salesloft';
+const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft';
 const salesloftApi = require('./salesloftApi');
 
 const express = require('express');

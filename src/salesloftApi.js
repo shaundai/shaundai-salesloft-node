@@ -7,7 +7,7 @@ module.exports = {
 require("dotenv").config();
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'http://localhost:3001/salesloft'
+const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft'
 const axios = require('axios');
 
 
