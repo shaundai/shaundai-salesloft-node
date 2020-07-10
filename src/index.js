@@ -33,7 +33,6 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.json(response.data)
             res.redirect('https://www.shaundai.com')
         }).catch((err) => {
             if (err.response.status === 401) {
@@ -47,7 +46,6 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.json(response.data)
                     res.redirect('https://www.shaundai.com')
                 })
             }
