@@ -47,7 +47,8 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.send(response.data)
+                    res.json(response.data)
+                    res.redirect('https://www.shaundai.com')
                 })
             }
         })
