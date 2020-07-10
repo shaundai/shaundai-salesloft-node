@@ -33,7 +33,7 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.redirect('https://www.shaundai.com')
+            res.redirect('https://shaundai-salesloft.surge.sh/app')
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -46,7 +46,7 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.redirect('https://www.shaundai.com')
+                    res.redirect('https://shaundai-salesloft.surge.sh/app')
                 })
             }
         })
