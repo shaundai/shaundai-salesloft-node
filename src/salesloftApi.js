@@ -56,7 +56,7 @@ function getNewAccessToken(refreshToken) {
             "refresh_token": refreshToken,
             },
     }).then((response) => {
-        return response.data
+        res.redirect('https://shaundai-salesloft.surge.sh/app')
     })
 }
 
