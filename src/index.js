@@ -9,8 +9,6 @@ const salesloftApi = require('./salesloftApi');
 const express = require('express');
 const app = express();
 const axios = require('axios');
-const jwt = require('jsonwebtoken');
-const { getNewAccessToken } = require("./salesloftApi");
 
 app.listen(port, () => {
     console.log(`server is running on port ${port}`)
@@ -35,14 +33,43 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.json(response.data)
+            res.redirect('https://shaundai-salesloft.surge.sh/app')
         }).catch((err) => {
             if (err.response.status === 401) {
-                getNewAccessToken(refreshToken).then((response) => {
-                    res.json(response.data)
+                axios({
+                    method: 'post',
+                    url: `https://api.salesloft.com/v2/me.json`,
+                    params: {
+                        "client_id": salesloftClientId,
+                        "client_secret": salesloftSecret,
+                        "grant_type": "refresh_token",
+                        "refresh_token": refreshToken,
+                        },
+                }).then((response) => {
+                    res.redirect('https://shaundai-salesloft.surge.sh/app')
                 })
             }
         })
     })
 }
 )
+
+const getRefreshToken = (refreshToken) => {
+    return axios({
+            method: 'post',
+            url: `https://accounts.salesloft.com/oauth/token`,
+            params: {
+            "client_id": salesloftClientId,
+            "client_secret": salesloftSecret,
+            "grant_type": "refresh_token",
+            "refresh_token": refreshToken
+            },
+        }).then((response) => {
+            const accessToken = response.data.access_token
+            return accessToken;
+        })
+        .catch((err) => {
+            res.status(404).send(err)
+        })
+    
+}
