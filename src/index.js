@@ -10,9 +10,6 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 
-app.listen(port, () => {
-    console.log(`server is running on port ${port}`)
-})
 
 app.get('/', (req, res) => {
    res.send('main app')
@@ -32,8 +29,11 @@ app.get('/salesloft', (req, res) => {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
-        }).then((response) => {
-            res.redirect('https://shaundai-salesloft.surge.sh/app')
+        }).then((req, res, next) => {
+            res.redirect('https://shaundai-salesloft.surge.sh/app');
+            next()
+        }, (req, res) => {
+            console.log('hey')
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -73,3 +73,8 @@ const getRefreshToken = (refreshToken) => {
         })
     
         }
+
+
+app.listen(port, () => {
+    console.log(`server is running on port ${port}`)
+})
