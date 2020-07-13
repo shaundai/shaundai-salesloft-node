@@ -3,7 +3,7 @@ const port = process.env.PORT || 3001;
 const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'https://shaundai-salesloft.surge.sh/app';
+const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft';
 const salesloftApi = require('./salesloftApi');
 
 const express = require('express');
@@ -33,7 +33,7 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.json(response.data)
+            res.redirect('https://shaundai-salesloft.surge.sh/app')
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -46,7 +46,7 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.json(response.data)
+                    res.redirect('https://shaundai-salesloft.surge.sh/app')
                 })
             }
         })
@@ -72,4 +72,4 @@ const getRefreshToken = (refreshToken) => {
             res.status(404).send(err)
         })
     
-}
+        }

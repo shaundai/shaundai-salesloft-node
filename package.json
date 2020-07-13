@@ -15,13 +15,5 @@
     "passport-oauth": "^1.0.0"
   },
   "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shaundai/shaundai-salesloft-node.git"
-  },
-  "bugs": {
-    "url": "https://github.com/shaundai/shaundai-salesloft-node/issues"
-  },
-  "homepage": "https://github.com/shaundai/shaundai-salesloft-node#readme",
   "description": ""
 }
