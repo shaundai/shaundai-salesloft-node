@@ -7,9 +7,8 @@ module.exports = {
 require("dotenv").config();
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'https://shaundai-salesloft.surge.sh/app'
+const redirectUri = 'https://www.shaundai.com'
 const axios = require('axios');
-
 
 
 function getAccessToken(code, context, scope) {
@@ -56,7 +55,7 @@ function getNewAccessToken(refreshToken) {
             "refresh_token": refreshToken,
             },
     }).then((response) => {
-        res.redirect('https://shaundai-salesloft.surge.sh/app')
+        res.json(response.data)
     })
 }
 
