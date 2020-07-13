@@ -33,11 +33,7 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-<<<<<<< HEAD
             res.json(response.data)
-=======
-            res.redirect('https://www.shaundai.com')
->>>>>>> parent of d859486... change routing to app page
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -50,11 +46,7 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-<<<<<<< HEAD
                     res.json(response.data)
-=======
-                    res.redirect('https://www.shaundai.com')
->>>>>>> parent of d859486... change routing to app page
                 })
             }
         })
