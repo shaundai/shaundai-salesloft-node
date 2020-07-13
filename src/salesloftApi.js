@@ -56,6 +56,8 @@ function getNewAccessToken(refreshToken) {
             },
     }).then((response) => {
         res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
     })
 }
 
