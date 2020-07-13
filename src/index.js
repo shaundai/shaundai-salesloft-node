@@ -29,11 +29,8 @@ app.get('/salesloft', (req, res) => {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
-        }).then((req, res, next) => {
-            res.redirect('https://shaundai-salesloft.surge.sh/app');
-            next()
-        }, (req, res) => {
-            console.log('hey')
+        }).then((response) => {
+            res.redirect('https://shaundai-salesloft.surge.sh/app')
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
