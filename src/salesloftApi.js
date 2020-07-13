@@ -41,6 +41,8 @@ function getUserInformation (accessToken, refreshToken) {
             getNewAccessToken(refreshToken);
         }}).then((response) => {
             getUserInformation(response.access_token, response.refresh_token)
+        }).catch((err) => {
+            console.log(err)
         })
 }
 
