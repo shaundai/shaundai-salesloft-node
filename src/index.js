@@ -47,8 +47,6 @@ app.get('/salesloft', (req, res) => {
                         },
                 }).then((response) => {
                     res.json(response.data)
-                }).catch((err) => {
-                    console.log(err)
                 })
             }
         })

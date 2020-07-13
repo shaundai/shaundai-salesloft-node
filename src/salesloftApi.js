@@ -24,6 +24,8 @@ function getAccessToken(code, context, scope) {
         "context": context,
         "scope": scope
         },
+    }).catch((err) => {
+        res.send(err)
     })
 }
 
