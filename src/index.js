@@ -23,10 +23,11 @@ app.use(cors());
 app.use('/accounts', accounts);
 
 //gets info about me or authenticated user
-app.get('/salesloft', (req, res) => {
+app.get('/salesloft', (req, res, next) => {
     const code = req.query.code
     const context = req.query.context
     const scope = req.query.scope
+
     salesloftApi.getAccessToken(code, context, scope).then((response) => {
         let accessToken = response.data.access_token
         const refreshToken = response.data.refresh_token
@@ -37,7 +38,7 @@ app.get('/salesloft', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.redirect(redirectUri)
+            res.json(response.data)
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -50,7 +51,7 @@ app.get('/salesloft', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.redirect(redirectUri)
+                    res.json(response.data)
                 })
             }
         })
