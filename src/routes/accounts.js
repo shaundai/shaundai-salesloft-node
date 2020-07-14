@@ -1,38 +1,51 @@
 require("dotenv").config();
-
-const express = require('express');
-const axios = require('axios');
-const router = express.Router();
-
-const salesloftApi = require('../salesloftApi');
+const port = process.env.PORT || 3001;
+const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
+const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft';
+const cors = require("cors");
 
+const salesloftApi = require('../salesloftApi');
 
-const redirectUri = 'http://https://shaundai-salesloft-node.herokuapp.com/salesloft:3001/accounts';
+const express = require('express');
+const router = express.Router();
+const axios = require('axios');
 
-router.get('/', function(req, res) {
+//gets info about me or authenticated user
+router.get('/', (req, res) => {
     const code = req.query.code
     const context = req.query.context
     const scope = req.query.scope
-    return axios({
-        method: 'post',
-        url: `https://accounts.salesloft.com/oauth/token`,
-        params: {
-        "client_id": salesloftClientId,
-        "client_secret": salesloftSecret,
-        "code": code,
-        "grant_type": "authorization_code",
-        "redirect_uri": redirectUri,
-        "context": context,
-        "scope": scope
-        },
-    }).then((response) => {
+    salesloftApi.getAccessToken(code, context, scope).then((response) => {
         let accessToken = response.data.access_token
         const refreshToken = response.data.refresh_token
-        res.send('hi')
-    }).catch(err => err)
-});
+        axios({
+            method: 'get',
+            url: `https://api.salesloft.com/v2/me.json`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then((response) => {
+            res.send(response.data)
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                axios({
+                    method: 'post',
+                    url: `https://api.salesloft.com/v2/me.json`,
+                    params: {
+                        "client_id": salesloftClientId,
+                        "client_secret": salesloftSecret,
+                        "grant_type": "refresh_token",
+                        "refresh_token": refreshToken,
+                        },
+                }).then((response) => {
+                    res.send(response.data)
+                })
+            }
+        })
+    })
+}
+)
 
-
-module.exports = router;
+        module.exports = router;

@@ -7,7 +7,7 @@ const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft';
 const cors = require("cors");
 
 const salesloftApi = require('./salesloftApi');
-const testAPIRouter = require('./routes/testApi')
+const accounts = require('./routes/accounts')
 
 const express = require('express');
 const app = express();
@@ -15,14 +15,12 @@ const router = express.Router();
 const axios = require('axios');
 
 
-
 app.get('/', (req, res) => {
    res.send('main app')
 })
 
 app.use(cors());
-app.use('/testAPI', testAPIRouter);
-
+app.use('/accounts', accounts);
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
