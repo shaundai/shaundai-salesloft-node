@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.send(response.data)
+            res.send('response.data.data.id')
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.send(response.data)
+                    res.send('response.data.data.id')
                 })
             }
         })
