@@ -3,7 +3,7 @@ const port = process.env.PORT || 3001;
 const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'https://shaundai-salesloft.surge.sh';
+const redirectUri = 'https://shaundai-salesloft.surge.sh/app';
 const cors = require("cors");
 
 const salesloftApi = require('./salesloftApi');
