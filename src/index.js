@@ -9,16 +9,19 @@ const salesloftApi = require('./salesloftApi');
 const accounts = require('./routes/accounts')
 
 const express = require('express');
+const path = require("path");
 const app = express();
 const router = express.Router();
 const axios = require('axios');
 
 
 app.get('/', (req, res) => {
-   res.send('main app')
+   res.sendFile(__dirname + '../public/App.js')
 })
-
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors());
+
 app.use('/accounts', accounts);
 
 app.route('/login')
