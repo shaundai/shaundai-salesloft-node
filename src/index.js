@@ -26,15 +26,8 @@ app.use('/accounts', accounts);
 
 app.route('/login')
     .get((req, res) => {
-        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://accounts.salesloft.com/oauth/token&response_type=code`)
-        .then(() => {
-            const code = req.query.code
-            const context = req.query.context
-            const scope = req.query.scope
-            res.send(code)
-        }).catch(err => err)
+        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://shaundai-salesloft-node.herokuapp.com&response_type=code`) 
     })
-
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
