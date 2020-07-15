@@ -24,9 +24,8 @@ app.use(cors());
 
 app.use('/accounts', accounts);
 
-app.route('/login')
-    .get((req, res) => {
-        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://shaundai-salesloft-node.herokuapp.com&response_type=code`) 
+app.get('/login', (req, res) => {
+        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://shaundai-salesloft-node.herokuapp.com/salesloft&response_type=code`) 
     })
 
 //gets info about me or authenticated user
