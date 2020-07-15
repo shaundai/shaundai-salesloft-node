@@ -11,7 +11,6 @@ const redirectUri = 'https://shaundai-salesloft.surge.sh/app'
 const axios = require('axios');
 
 
-
 function getAccessToken(code, context, scope) {
     return axios({
         method: 'post',

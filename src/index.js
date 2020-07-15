@@ -22,12 +22,23 @@ app.get('/', (req, res) => {
 app.use(cors());
 app.use('/accounts', accounts);
 
+app.route('/login')
+    .get((req, res) => {
+        axios.get(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://www.shaundai.com&response_type=code`)
+        .then(() => {
+            const code = req.query.code
+            const context = req.query.context
+            const scope = req.query.scope
+            res.send(code)
+        }).catch(err => err)
+    })
+
+
 //gets info about me or authenticated user
-app.get('/salesloft', (req, res, next) => {
+app.get('/salesloft', (req, res) => {
     const code = req.query.code
     const context = req.query.context
     const scope = req.query.scope
-
     salesloftApi.getAccessToken(code, context, scope).then((response) => {
         let accessToken = response.data.access_token
         const refreshToken = response.data.refresh_token
@@ -38,7 +49,7 @@ app.get('/salesloft', (req, res, next) => {
                 Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            res.json(response.data)
+            res.json(response.data.data)
         }).catch((err) => {
             if (err.response.status === 401) {
                 axios({
@@ -51,7 +62,7 @@ app.get('/salesloft', (req, res, next) => {
                         "refresh_token": refreshToken,
                         },
                 }).then((response) => {
-                    res.json(response.data)
+                    res.json(response.data.data)
                 })
             }
         })
