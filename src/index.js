@@ -3,7 +3,6 @@ const port = process.env.PORT || 3001;
 const salesloftApiKey = process.env.SALESLOFT_API_KEY;
 const salesloftSecret = process.env.SALESLOFT_APP_SECRET;
 const salesloftClientId = process.env.SALESLOFT_APP_ID;
-const redirectUri = 'https://shaundai-salesloft-node.herokuapp.com/salesloft';
 const cors = require("cors");
 
 const salesloftApi = require('./salesloftApi');
@@ -24,7 +23,7 @@ app.use('/accounts', accounts);
 
 app.route('/login')
     .get((req, res) => {
-        axios.get(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://www.shaundai.com&response_type=code`)
+        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://accounts.salesloft.com/oauth/token&response_type=code`)
         .then(() => {
             const code = req.query.code
             const context = req.query.context
