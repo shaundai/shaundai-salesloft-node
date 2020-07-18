@@ -13,20 +13,44 @@ const path = require("path");
 const app = express();
 const router = express.Router();
 const axios = require('axios');
+const bodyParser = require('body-parser');
 
+const tokens = {}
 
 app.get('/', (req, res) => {
    res.sendFile(__dirname + '../public/App.js')
 })
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(bodyParser.json())
 app.use(cors());
 
 app.use('/accounts', accounts);
 
-app.get('/login', (req, res) => {
-        res.redirect(`https://accounts.salesloft.com/oauth/authorize?client_id=${salesloftClientId}&redirect_uri=https://shaundai-salesloft-node.herokuapp.com/salesloft&response_type=code`) 
+app.post('/token', (req, res) => {
+    tokens.accessToken = req.body.accessToken
+    tokens.refreshToken = req.body.refreshToken
+    res.status(200).send()
+})
+
+app.get('/tokens', (req, res) => {
+    res.send(tokens)
+})
+
+
+app.get('/api/salesloft', (req, res) => {
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/me.json`,
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
     })
+})
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
