@@ -16,6 +16,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const tokens = {}
+const userInfo = {}
 
 app.get('/', (req, res) => {
    res.sendFile(__dirname + '../public/App.js')
@@ -33,12 +34,19 @@ app.post('/token', (req, res) => {
     res.status(200).send()
 })
 
+//information needed over and over in app
+//access and refresh tokens
 app.get('/tokens', (req, res) => {
     res.send(tokens)
 })
 
+//user ID and other info about the user
+app.get('/user', (req, res) => {
+    res.send(userInfo)
+})
 
-app.get('/api/salesloft', (req, res) => {
+
+app.get('/api/user', (req, res) => {
     return axios({
         method: 'get',
         url: `https://api.salesloft.com/v2/me.json`,
@@ -51,6 +59,21 @@ app.get('/api/salesloft', (req, res) => {
         console.log(err)
     })
 })
+
+app.get('/api/accounts', (req, res) => {
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/accounts.json`,
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
