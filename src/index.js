@@ -20,24 +20,30 @@ app.get('/', (req, res) => {
 app.use(bodyParser.json())
 app.use(cors());
 
+//information needed over and over in app
+//access and refresh tokens
 app.post('/token', (req, res) => {
     tokens.accessToken = req.body.accessToken
     tokens.refreshToken = req.body.refreshToken
     res.status(200).send()
 })
 
-//information needed over and over in app
-//access and refresh tokens
+app.post('/userid', (req, res) => {
+    userInfo.id = req.body.id
+    res.status(200).send()
+})
+
 app.get('/tokens', (req, res) => {
     res.send(tokens)
 })
 
 //user ID and other info about the user
-app.get('/user', (req, res) => {
+app.get('/userinfo', (req, res) => {
     res.send(userInfo)
 })
 
 
+//returns all info about user
 app.get('/api/user', (req, res) => {
     return axios({
         method: 'get',
@@ -52,10 +58,12 @@ app.get('/api/user', (req, res) => {
     })
 })
 
+
+//returns info about all accounts owned by user
 app.get('/api/accounts', (req, res) => {
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/accounts.json`,
+        url: `https://api.salesloft.com/v2/accounts.json?sort_by=last_contacted_at&per_page=100&owner_id%5B%5D=${userInfo.id}`,
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
         }
