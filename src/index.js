@@ -74,6 +74,22 @@ app.get('/api/accounts', (req, res) => {
     })
 })
 
+//returns people in salesloft for a given account id
+app.get('/api/accounts/people', (req, res) => {
+    const accountId = req.query.account_id
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/people.json?account_id%5B%5D=${accountId}`,
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
