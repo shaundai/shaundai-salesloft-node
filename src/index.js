@@ -9,6 +9,7 @@ const app = express();
 const router = express.Router();
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const { query } = require("express");
 
 const tokens = {}
 const userInfo = {}
@@ -77,9 +78,13 @@ app.get('/api/accounts', (req, res) => {
 //returns people in salesloft for a given account id
 app.get('/api/accounts/people', (req, res) => {
     const accountId = req.query.account_id
+    const queryString = accountId[0].split(",")
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/people.json?account_id%5B%5D=${accountId}`,
+        url: `https://api.salesloft.com/v2/people.json`,
+        params: {
+            account_id: queryString
+        },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
         }
