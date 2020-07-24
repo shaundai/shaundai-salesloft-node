@@ -12,7 +12,6 @@ const bodyParser = require('body-parser');
 const { query } = require("express");
 
 const tokens = {}
-const userInfo = {}
 
 app.get('/', (req, res) => {
    res.send('main app')
@@ -29,20 +28,9 @@ app.post('/token', (req, res) => {
     res.status(200).send()
 })
 
-app.post('/userid', (req, res) => {
-    userInfo.id = req.body.id
-    res.status(200).send()
-})
-
 app.get('/tokens', (req, res) => {
     res.send(tokens)
 })
-
-//user ID and other info about the user
-app.get('/userinfo', (req, res) => {
-    res.send(userInfo)
-})
-
 
 //returns all info about user
 app.get('/api/user', (req, res) => {
