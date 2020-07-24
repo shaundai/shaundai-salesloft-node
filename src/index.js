@@ -59,12 +59,18 @@ app.get('/api/user', (req, res) => {
     })
 })
 
-
-//returns info about all accounts owned by user
+//returns info about accounts
 app.get('/api/accounts', (req, res) => {
+    const ownerId = req.query.owner_id
+    const queryString = ownerId[0].split(",")
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/accounts.json?sort_by=last_contacted_at&per_page=100&owner_id%5B%5D=${userInfo.id}`,
+        url: `https://api.salesloft.com/v2/accounts.json`,
+        params: {
+            sort_by: "last_contacted_at",
+            per_page: "100",
+            owner_id: queryString,
+        },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
         }
