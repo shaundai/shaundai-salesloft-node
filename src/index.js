@@ -47,17 +47,17 @@ app.get('/api/user', (req, res) => {
     })
 })
 
-//returns info about accounts
+//returns info about accounts by owner
 app.get('/api/accounts', (req, res) => {
     const ownerId = req.query.owner_id
-    const queryString = ownerId[0].split(",")
+    const ownerQueryString = ownerId[0].split(",")
     return axios({
         method: 'get',
         url: `https://api.salesloft.com/v2/accounts.json`,
         params: {
             sort_by: "last_contacted_at",
             per_page: "100",
-            owner_id: queryString,
+            owner_id: ownerQueryString,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
@@ -68,6 +68,8 @@ app.get('/api/accounts', (req, res) => {
         console.log(err)
     })
 })
+
+//to do - make a new route for accounts/account for the getSingleAccountInfo function
 
 //returns people in salesloft for a given account id
 app.get('/api/accounts/people', (req, res) => {
