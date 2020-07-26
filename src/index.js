@@ -70,7 +70,6 @@ app.get('/api/accounts', (req, res) => {
 })
 
 app.get('/api/account/:accountid', (req, res) => {
-    const accountId = req.params.accountid
     return axios({
         method: 'get',
         url: `https://api.salesloft.com/v2/accounts.json`,
@@ -96,6 +95,23 @@ app.get('/api/accounts/people', (req, res) => {
         url: `https://api.salesloft.com/v2/people.json`,
         params: {
             account_id: queryString
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+app.get('/api/cadence/:personid', (req, res) => {
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/cadence_memberships.json`,
+        params: {
+            person_id: req.params.personid,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
