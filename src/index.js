@@ -112,6 +112,7 @@ app.get('/api/cadence/:personid', (req, res) => {
         url: `https://api.salesloft.com/v2/cadence_memberships.json`,
         params: {
             person_id: req.params.personid,
+            currently_on_cadence: true,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
