@@ -106,13 +106,32 @@ app.get('/api/accounts/people', (req, res) => {
     })
 })
 
-app.get('/api/cadence/:personid', (req, res) => {
+//gets list of cadence memberships by person ID
+app.get('/api/cadence/current/:personid', (req, res) => {
     return axios({
         method: 'get',
         url: `https://api.salesloft.com/v2/cadence_memberships.json`,
         params: {
             person_id: req.params.personid,
             currently_on_cadence: true,
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+//turns cadence ID into cadence name
+app.get('/api/cadence/name/:cadenceid', (req, res) => {
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/cadences.json`,
+        params: {
+            ids: req.params.cadenceid,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
