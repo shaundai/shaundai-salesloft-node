@@ -126,12 +126,14 @@ app.get('/api/cadence/current/:personid', (req, res) => {
 })
 
 //turns cadence ID into cadence name
-app.get('/api/cadence/name/:cadenceid', (req, res) => {
+app.get('/api/cadence/name', (req, res) => {
+    const cadenceId = req.query.cadenceid
+    const queryString = cadenceId[0].split(",")
     return axios({
         method: 'get',
         url: `https://api.salesloft.com/v2/cadences.json`,
         params: {
-            ids: req.params.cadenceid,
+            ids: queryString
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
