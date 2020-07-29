@@ -106,6 +106,22 @@ app.get('/api/accounts/people', (req, res) => {
     })
 })
 
+//fetches a person by id
+app.get('/api/people/id/:personid', (req, res) => {
+    const personId = req.params.personid
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/people/${personId}.json`,
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 //gets list of cadence memberships by person ID
 app.get('/api/cadence/current/:personid', (req, res) => {
     return axios({
@@ -144,6 +160,23 @@ app.get('/api/cadence/name', (req, res) => {
         console.log(err)
     })
 })
+
+//removes a person from a cadence
+app.get('/api/cadence/remove/:cadenceid', (req, res) => {
+    const cadenceId = req.params.cadenceid
+    return axios({
+        method: 'delete',
+        url: `https://api.salesloft.com/v2/cadence_memberships/${cadenceId}.json`,
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 
 
 //gets info about me or authenticated user
