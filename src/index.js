@@ -162,17 +162,17 @@ app.get('/api/cadence/membership', (req, res) => {
     })
 })
 
+//gets list of all cadences by owner
 app.get('/api/cadences/all', (req, res) => {
     const ownerGuid = req.query.ownerguid
     const teamCadence = req.query.teamcadence
-    const peopleAddable = req.query.peopleaddable
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/cadence_memberships.json`,
+        url: `https://api.salesloft.com/v2/cadences.json`,
         params: {
-            owned_by_guid: ownerGuid,
             team_cadence: teamCadence,
             people_addable: true,
+            owned_by_guid: ownerGuid,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
