@@ -122,7 +122,7 @@ app.get('/api/people/id/:personid', (req, res) => {
     })
 })
 
-//gets list of cadence memberships by person ID
+//gets list of all cadence memberships by person ID
 app.get('/api/cadence/current/:personid', (req, res) => {
     return axios({
         method: 'get',
@@ -130,6 +130,49 @@ app.get('/api/cadence/current/:personid', (req, res) => {
         params: {
             person_id: req.params.personid,
             currently_on_cadence: true,
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+//gets list of a certain cadence membership by person ID and cadence ID
+app.get('/api/cadence/membership', (req, res) => {
+    const personId = req.query.personid
+    const cadenceId = req.query.cadenceid
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/cadence_memberships.json`,
+        params: {
+            person_id: personId,
+            cadence_id: cadenceId,
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+app.get('/api/cadences/all', (req, res) => {
+    const ownerGuid = req.query.ownerguid
+    const teamCadence = req.query.teamcadence
+    const peopleAddable = req.query.peopleaddable
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/cadence_memberships.json`,
+        params: {
+            owned_by_guid: ownerGuid,
+            team_cadence: teamCadence,
+            people_addable: peopleAddable
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
