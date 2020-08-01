@@ -172,7 +172,7 @@ app.get('/api/cadences/all', (req, res) => {
         params: {
             owned_by_guid: ownerGuid,
             team_cadence: teamCadence,
-            people_addable: peopleAddable
+            people_addable: true,
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
