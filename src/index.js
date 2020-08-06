@@ -222,9 +222,9 @@ app.get('/api/cadence/remove/:cadenceid', (req, res) => {
 
 
 //add a person to a cadence
-app.get('/api/cadence/add/:cadenceid/:personid', (req, res) => {
-    const cadenceId = req.params.cadenceid
-    const personId = req.params.personid
+app.get('/api/cadence/add', (req, res) => {
+    const cadenceId = req.query.cadenceid
+    const personId = req.query.personid
     return axios({
         method: 'post',
         url: `https://api.salesloft.com/v2/cadence_memberships.json`,
