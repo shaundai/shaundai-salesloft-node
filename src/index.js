@@ -221,6 +221,27 @@ app.get('/api/cadence/remove/:cadenceid', (req, res) => {
 })
 
 
+//add a person to a cadence
+app.get('/api/cadence/add/:cadenceid/:personid', (req, res) => {
+    const cadenceId = req.params.cadenceid
+    const personId = req.params.personid
+    return axios({
+        method: 'post',
+        url: `https://api.salesloft.com/v2/cadence_memberships.json`,
+        params: {
+            person_id: personId,
+            cadence_id: cadenceId,
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
