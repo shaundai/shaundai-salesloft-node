@@ -48,14 +48,11 @@ app.get('/api/user', (req, res) => {
 })
 
 //returns name of any user on team
-app.get('/api/team', (req, res) => {
+app.get('/api/team/id/:userid', (req, res) => {
+    const userid = req.params.userid
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/team.json`,
-        params: {
-            ids: req.params.userid,
-            visible_only: false
-        },
+        url: `https://api.salesloft.com/v2/users/${userid}.json`,
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
         }
