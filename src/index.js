@@ -47,7 +47,26 @@ app.get('/api/user', (req, res) => {
     })
 })
 
-//returns info about all accounts owned by user
+//returns name of any user on team
+app.get('/api/team', (req, res) => {
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/users.json`,
+        params: {
+            ids: req.params.userid
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+
+//returns info about all accounts owned by current user
 app.get('/api/accounts', (req, res) => {
     const ownerId = req.query.owner_id
     const ownerQueryString = ownerId[0].split(",")
