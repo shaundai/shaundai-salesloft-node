@@ -51,9 +51,10 @@ app.get('/api/user', (req, res) => {
 app.get('/api/team', (req, res) => {
     return axios({
         method: 'get',
-        url: `https://api.salesloft.com/v2/users.json`,
+        url: `https://api.salesloft.com/v2/team.json`,
         params: {
-            ids: req.params.userid
+            ids: req.params.userid,
+            visible_only: false
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
