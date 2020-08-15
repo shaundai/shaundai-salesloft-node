@@ -259,6 +259,25 @@ app.get('/api/cadence/add', (req, res) => {
     })
 })
 
+//fetches steps on a cadence
+app.get('/api/cadence/steps', (req, res) => {
+    const cadenceId = req.query.cadenceid
+    return axios({
+        method: 'get',
+        url: `https://api.salesloft.com/v2/steps.json`,
+        params: {
+            cadence_id: cadenceId,
+            sort_by: created_at,
+        },
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken}`
+        }
+    }).then((response) => {
+        res.json(response.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
 
 //gets info about me or authenticated user
 app.get('/salesloft', (req, res) => {
