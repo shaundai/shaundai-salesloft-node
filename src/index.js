@@ -267,7 +267,7 @@ app.get('/api/cadence/steps', (req, res) => {
         url: `https://api.salesloft.com/v2/steps.json`,
         params: {
             cadence_id: cadenceId,
-            sort_by: created_at,
+            sort_by: 'created_at',
         },
         headers: {
             Authorization: `Bearer ${tokens.accessToken}`
