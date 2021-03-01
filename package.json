@@ -16,8 +16,6 @@
     "express": "^4.17.1",
     "passport-oauth": "^1.0.0"
   },
-  "devDependencies": {
-    "axios": ">=0.21.1"
-  },
+  "devDependencies": {},
   "description": ""
 }
